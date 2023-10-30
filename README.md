@@ -1,6 +1,5 @@
 # SISFLIX
-| ![Logotipo SISFLIX](sisflixlogo.png) |
-|:---:|
+![Logotipo SISFLIX](sisflixlogo.png)
 
 SISFLIX is a corporate streaming platform designed with a focus on security and real-time delivery. It efficiently integrates DRM technologies and vital streaming protocols, ensuring robust content protection and a seamless streaming experience.
 
