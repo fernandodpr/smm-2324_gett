@@ -29,5 +29,5 @@ To run the SISFLIX platform locally:
 ## Made by:
 For any queries or feedback, please reach out to:
 - Martina Paramos
-- Andra Dacosta
+- Andrea Dacosta
 - Fernando de Peroy
