@@ -2,8 +2,7 @@
 ## Introduction
 
 Dockerizing an HTTPS server involves encapsulating the web server application along with its dependencies in a Docker container. Here I show a guide on how to dockerize an HTTPS server using Nginx as an example.
-
-> [!NOTE] 
+ 
 > Make sure you have Docker installed on your system before you begin.
 
 ## 1. Create the working directory
@@ -60,7 +59,6 @@ Create them in the same directory as the Dockerfile with the following commands:
 
 `openssl req -new -key key.pem -x509 -days 365 -out cert.pem`
 
-> [!IMPORTANT] 
 > It is important to put the name of the server (in this case localhost) in the "Common Name" field when creating cert.pem
 
 If you do not want to have the certificates in the same directory, change the following lines in the Dockerfile:
