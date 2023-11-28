@@ -1,0 +1,40 @@
+<!-- video.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYSFLIX</title>
+  <!-- Enlace al tema Quartz de Bootswatch -->
+  <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <h1 class="text-center display-4">SISFLIX: <%= video.titulo %></h1>
+  
+    <div class="text-center">
+    
+  
+      <video controls width="640" height="360" class="rounded shadow">
+        <source src="<%= video.src %>" type="video/mp4">
+        Tu navegador no soporta el elemento de video.
+      </video>
+    </div>
+  </div>
+
+  <!-- Scripts de Bootstrap y Popper.js (Asegúrate de incluir jQuery y Popper.js si es necesario) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
+
+  <!-- Script personalizado -->
+  <script>
+    // Obtén el parámetro de la URL
+    const videoId = document.getElementById('videoIdDisplay').dataset.videoId;
+
+    // Muestra el parámetro en la página
+    document.getElementById('videoIdDisplay').innerText = `Video ID: ${videoId}`;
+  </script>
+</body>
+</html>
