@@ -1,0 +1,15 @@
+version: '3.1'  # Versión de Docker Compose
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # Nombre de usuario del administrador
+      MONGO_INITDB_ROOT_PASSWORD: example  # Contraseña del administrador
+    volumes:
+      - mongodb_data:/data/db  # Persistir los datos incluso después de que el contenedor se detenga
+
+volumes:
+  mongodb_data:  # Define un volumen para la persistencia de datos
