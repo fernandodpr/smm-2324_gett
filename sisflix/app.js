@@ -22,7 +22,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 //Conectamos con la BBDD
-mongoose.connect('mongodb://localhost:27017/videos');
+mongoose.connect('mongodb://sisflix.net:27017/videos');
 
 
 const videoSchema = new mongoose.Schema({
