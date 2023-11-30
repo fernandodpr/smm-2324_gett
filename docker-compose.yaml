@@ -24,6 +24,8 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./sisflix:/usr/src/app
+      - ./cert.pem:/ssl/server.cert:ro
+      - ./key.pem:/ssl/server.key:ro
     environment:
       - NODE_ENV=production
 

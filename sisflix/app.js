@@ -9,12 +9,12 @@ const publicPath = path.join(__dirname, 'public');
 const viewsPath = path.join(__dirname, 'views');
 
 // Configuración para HTTPS
-const privateKey = fs.readFileSync(path.join(__dirname, 'server.key'), 'utf8');
-const certificate = fs.readFileSync(path.join(__dirname, 'server.cert'), 'utf8');
+const privateKey = fs.readFileSync("/ssl/server.key", 'utf8');
+const certificate = fs.readFileSync("/ssl/server.cert", 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 // Crea el servidor HTTPS
-const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentialserver.keyerver.key, app);
 
 //app.use(express.static(publicPath));
 app.use('/static', express.static(path.join(__dirname, 'node_modules')));
