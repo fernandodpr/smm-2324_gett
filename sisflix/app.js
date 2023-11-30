@@ -9,20 +9,21 @@ const publicPath = path.join(__dirname, 'public');
 const viewsPath = path.join(__dirname, 'views');
 
 // Configuración para HTTPS
+
 const privateKey = fs.readFileSync("/ssl/server.key", 'utf8');
 const certificate = fs.readFileSync("/ssl/server.cert", 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 // Crea el servidor HTTPS
-const httpsServer = https.createServer(credentialserver.keyerver.key, app);
+const httpsServer = https.createServer(credentials, app);
 
 //app.use(express.static(publicPath));
 app.use('/static', express.static(path.join(__dirname, 'node_modules')));
 app.use(express.json());
 app.set('view engine', 'ejs');
 
-//Conectamos con la BBDD
-mongoose.connect('mongodb://sisflix.net:27017/videos');
+mongoose.connect('mongodb://root:example@sisflix.net:27017/videos');
+
 
 
 const videoSchema = new mongoose.Schema({
@@ -54,6 +55,7 @@ app.get('/video/:id?', async (req, res) => {
   let video;
   try{
     video = await Video.findById(req.params.id);
+    
     res.render('video', { video });
   }catch(error){
     res.status(500).send(error);
