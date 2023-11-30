@@ -8,25 +8,23 @@ echo "Archivos procesados:"
         echo "$archivo"
     done
 
-# probando git
+# '''
+# PS D:\Datos\Escritorio> D:\Datos\Descargas\packager-win-x64.exe 
+# >> in="D:\Datos\Descargas\file_example_MP4_480_1_5MG.mp4",stream=audio,output=audio_enc.mp4,drm_label=AUDIO 
+# >> in="D:\Datos\Descargas\video_500k.mp4",stream=video,output=video_500k_enc.mp4,drm_label=SD 
+# >> in="D:\Datos\Descargas\file_example_MP4_480_1_5MG.mp4",stream=video,output=video_1500k_enc.mp4,drm_label=HD 
+# >> --enable_raw_key_encryption 
+# >> --keys label=AUDIO:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c,label=SD:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c,label=HD:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c 
+# >> --mpd_output manifest_enc.mpd `
+# >> --hls_master_playlist_output playlist_enc.m3u8^C
+# PS D:\Datos\Escritorio> openssl rand -hex 16
+# WARNING: can't open config file: C:\Program Files (x86)\VMware\OpenSSL/openssl.cnf
+# faa13fed78458df86b3b81502a729ec7
+# PS D:\Datos\Escritorio> openssl rand -hex 16
+# WARNING: can't open config file: C:\Program Files (x86)\VMware\OpenSSL/openssl.cnf
+# 0ac8673f17af3f121a3ea7c58fd71723
 
-'''
-PS D:\Datos\Escritorio> D:\Datos\Descargas\packager-win-x64.exe 
->> in="D:\Datos\Descargas\file_example_MP4_480_1_5MG.mp4",stream=audio,output=audio_enc.mp4,drm_label=AUDIO 
->> in="D:\Datos\Descargas\video_500k.mp4",stream=video,output=video_500k_enc.mp4,drm_label=SD 
->> in="D:\Datos\Descargas\file_example_MP4_480_1_5MG.mp4",stream=video,output=video_1500k_enc.mp4,drm_label=HD 
->> --enable_raw_key_encryption 
->> --keys label=AUDIO:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c,label=SD:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c,label=HD:key_id=501e9eb249d7efdf1162b07c32842c31:key=47c003c601fd6838a610a49e1c67cd4c 
->> --mpd_output manifest_enc.mpd `
->> --hls_master_playlist_output playlist_enc.m3u8^C
-PS D:\Datos\Escritorio> openssl rand -hex 16
-WARNING: can't open config file: C:\Program Files (x86)\VMware\OpenSSL/openssl.cnf
-faa13fed78458df86b3b81502a729ec7
-PS D:\Datos\Escritorio> openssl rand -hex 16
-WARNING: can't open config file: C:\Program Files (x86)\VMware\OpenSSL/openssl.cnf
-0ac8673f17af3f121a3ea7c58fd71723
-
-'''
+# '''
 
 
 
