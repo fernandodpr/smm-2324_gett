@@ -9,6 +9,7 @@ echo "Archivos procesados:"
     done
 
 # '''
+# EJEMPLO DE COMANDO CON ENCRIPTACION EJECUTADO DESDE UN WINDOWS, NECESARIAS LAS CLAVES Y LA ID DE CLAVE
 # PS D:\Datos\Escritorio> D:\Datos\Descargas\packager-win-x64.exe 
 # >> in="D:\Datos\Descargas\file_example_MP4_480_1_5MG.mp4",stream=audio,output=audio_enc.mp4,drm_label=AUDIO 
 # >> in="D:\Datos\Descargas\video_500k.mp4",stream=video,output=video_500k_enc.mp4,drm_label=SD 
@@ -54,16 +55,24 @@ do
 
 
         # Comando Shaka Packager
-        comando="packager input=/media/${nombre_con_extension},stream=audio,output=/media/${nombre_sin_extension}_audio.mp4 input=/media/${nombre_con_extension},stream=video,output=/media/${nombre_sin_extension}_video.mp4 --mpd_output /media/${nombre_mpd}"
+        # Habría que hacer que meta los archivos procesados ya en /webmedia, ya le he pasado al contenedor esa ruta dejar los archivos de salida en:
+        # "/webmedia"
+        # comando="packager input=/media/${nombre_con_extension},stream=audio,output=/media/${nombre_sin_extension}_audio.mp4 input=/media/${nombre_con_extension},stream=video,output=/media/${nombre_sin_extension}_video.mp4 --mpd_output /media/${nombre_mpd}"
+
 
         # Ejecutar el comando y redirigir la salida a un archivo
-        echo $comando > shaka-packager
+        #echo $comando > shaka-packager
+        
+        
+        docker exec smm-2324_gett_shaka-packager_1 $COMANDO > shaka-packager
+        
 
+        # No hace falta mover el scritpr al contenedor, con hacer el docker exec debería de llegar
         # Engadir script ao contenedor
-        chmod +x shaka-packager
-        docker cp ./shaka-packager shaka-packager-container:shaka-packager
+        #chmod +x shaka-packager
+        #docker cp ./shaka-packager shaka-packager-container:shaka-packager
         #docker exec shaka-packager-container chmod +x shaka-packager.sh
-        docker exec shaka-packager-container sh shaka-packager
+        #docker exec shaka-packager-container sh shaka-packager
 
     else
         echo "Archivo duplicado: $nuevo_archivo. No se mostrará el mensaje."

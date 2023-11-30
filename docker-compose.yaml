@@ -39,7 +39,8 @@ services:
   shaka-packager:
     image: google/shaka-packager
     volumes:
-      - ./media/:/media
+      - ./ingest/:/media
+      - ./webmedia/:/webmedia
     stdin_open: true  # Equivalente a '-i' en docker run
     tty: true         # Equivalente a '-t' en docker run
 
