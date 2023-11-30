@@ -1,4 +1,4 @@
-version: '3.1'  # Versión de Docker Compose
+version: '3.1'
 
 services:
   mongo:
@@ -6,10 +6,11 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root  # Nombre de usuario del administrador
-      MONGO_INITDB_ROOT_PASSWORD: example  # Contraseña del administrador
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - mongodb_data:/data/db  # Persistir los datos incluso después de que el contenedor se detenga
+      - mongodb_data:/data/db
+
   https-server:
     image: nginx
     ports:
@@ -19,6 +20,7 @@ services:
       - ./cert.pem:/etc/nginx/cert.pem:ro
       - ./webmedia:/usr/share/nginx/html:ro
       - ./key.pem:/etc/nginx/key.pem:ro
+
   sisflix:
     image: node:latest
     working_dir: /usr/src/app
@@ -28,14 +30,18 @@ services:
       - ./key.pem:/ssl/server.key:ro
     environment:
       - NODE_ENV=production
-
     command: sh -c "npm install && npm start"
     depends_on:
-      - mongo 
+      - mongo
     ports:
       - "8443:443"
 
-
+  shaka-packager:
+    image: google/shaka-packager
+    volumes:
+      - ./media/:/media
+    stdin_open: true  # Equivalente a '-i' en docker run
+    tty: true         # Equivalente a '-t' en docker run
 
 volumes:
-  mongodb_data:  # Define un volumen para la persistencia de datos
+  mongodb_data:
