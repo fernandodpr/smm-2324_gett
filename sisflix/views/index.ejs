@@ -64,7 +64,7 @@
         <%= video.titulo %>
       <a href="/video/<%= video._id %>" class="btn btn-primary btn-sm">Ver</a>
       <button type="button" class="btn btn-info btn-sm infoButton" data-bs-toggle="modal" data-bs-target="#infoModal" data-video-id="<%= video._id %>">Info</button>
-      <button type="button" class="btn btn-warning btn-sm editButton" data-video-id="<%= video._id %>">Editar</button>
+      <button type="button" class="btn btn-warning btn-sm editButton" data-video-id="<%= video._id %>" data-bs-toggle="modal" data-bs-target="#addVideoModal">Editar</button>
       <button type="button" class="btn btn-danger btn-sm deleteButton" data-video-id="<%= video._id %>">Eliminar</button>      </li>
     <% }); %>
   </ul>
@@ -123,33 +123,7 @@
   });
 </script>
 
-<script>
-  document.getElementById('addVideoForm').addEventListener('submit', function(e) {
-    e.preventDefault();
 
-    const formData = new FormData(this);
-    const data = {};
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
-
-    fetch('/api/video', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);
-      // Cierra el modal y limpia el formulario
-      $('#addVideoModal').modal('hide');
-      this.reset();
-    })
-    .catch(error => console.error('Error:', error));
-  });
-</script>
 
 <script>
   document.querySelectorAll('.infoButton').forEach(button => {
@@ -198,6 +172,87 @@
     });
   });
 
+document.querySelectorAll('.editButton').forEach(button => {
+  button.addEventListener('click', function() {
+    const videoId = this.getAttribute('data-video-id');
+    fetch('/api/video/' + videoId)
+      .then(response => response.json())
+      .then(video => {
+        // Asigna los valores del video a los campos del formulario
+        document.getElementById('titulo').value = video.titulo;
+        document.getElementById('src').value = video.src;
+        document.getElementById('key').value = video.key;
+        document.getElementById('keyid').value = video.keyid;
+        // Actualiza la acción del formulario para usar PUT
+        document.getElementById('addVideoForm').setAttribute('data-video-id', videoId);
+      })
+      .catch(error => console.error('Error:', error));
+  });
+});
+
+document.getElementById('addVideoForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const videoId = this.getAttribute('data-video-id');
+  const method = videoId ? 'PUT' : 'POST';
+  const endpoint = videoId ? '/api/video/' + videoId : '/api/video';
+
+  const formData = new FormData(this);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+
+  fetch(endpoint, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+
+    // Cierra el modal
+    const modalElement = document.getElementById('addVideoModal');
+    bootstrap.Modal.getInstance(modalElement).hide();
+
+    // Vacía el formulario
+    this.reset();
+
+    // Función para recargar la información de la tabla
+    reloadTableData();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Ocurrió un error');
+  });
+});
+
+function reloadTableData() {
+  // Aquí debes hacer una solicitud AJAX para obtener los datos actualizados de los videos
+  // Luego, reconstruir el contenido de la tabla en la página con esos datos.
+  // Por ejemplo:
+  location.reload()
+  /*fetch('/api/videos')
+    .then(response => response.json())
+    .then(videos => {
+      let tableContent = '';
+      videos.forEach(video => {
+        // Construye cada fila de la tabla con los datos de los videos
+        tableContent += `<li class="list-group-item d-flex justify-content-between align-items-center">
+          ${video.titulo}
+          <a href="/video/${video._id}" class="btn btn-primary btn-sm">Ver</a>
+          <button type="button" class="btn btn-info btn-sm infoButton" data-bs-toggle="modal" data-bs-target="#infoModal" data-video-id="${video._id}">Info</button>
+          <button type="button" class="btn btn-warning btn-sm editButton" data-video-id="${video._id}">Editar</button>
+          <button type="button" class="btn btn-danger btn-sm deleteButton" data-video-id="${video._id}">Eliminar</button>
+        </li>`;
+      });
+      document.querySelector('.list-group').innerHTML = tableContent;
+    })
+    .catch(error => console.error('Error:', error));*/
+}
 </script>
 
 
