@@ -80,12 +80,20 @@ app.get('/api/video/:id', async (req, res) => {
     res.status(500).send(error);
   }
 });
+// Ruta para mostrar el formulario de añadir nuevo video
+app.get('/add-video', (req, res) => {
+  res.render('add-video'); // Utiliza una plantilla EJS llamada 'add-video'
+});
 
 app.post('/api/video', async (req, res) => {
   try {
+    const { titulo, src, key, keyid } = req.body;
     const nuevoVideo = new Video({
       _id: new mongoose.Types.ObjectId(),
-      ...req.body
+      titulo, 
+      src, 
+      key, 
+      keyid
     });
     await nuevoVideo.save();
     res.status(201).json({ message: 'Video creado exitosamente', video: nuevoVideo });
@@ -94,6 +102,35 @@ app.post('/api/video', async (req, res) => {
   }
 });
 
+app.delete('/api/delete-all', async (req, res) => {
+  try {
+    // Borrar todos los documentos en la colección de videos
+    await Video.deleteMany({});
+
+    res.json({ message: 'Todos los videos han sido borrados exitosamente' });
+  } catch (error) {
+    console.error('Error al borrar los videos:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+app.post('/api/populate', async (req, res) => {
+  try {
+    // Array de videos de ejemplo
+    const videosEjemplo = [
+      { titulo: 'Video Demo 1', src: 'url1', key: 'clave1', keyid: 'keyid1' },
+      { titulo: 'Video Demo 2', src: 'url2', key: 'clave2', keyid: 'keyid2' },
+      // ... agregar 3 videos más
+    ];
+
+    // Insertar los videos en la base de datos
+    await Video.insertMany(videosEjemplo);
+
+    res.json({ message: 'Base de datos poblada con videos de ejemplo' });
+  } catch (error) {
+    console.error('Error al poblar la base de datos:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 const httpsPort = 443;
 

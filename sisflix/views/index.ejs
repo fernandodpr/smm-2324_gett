@@ -14,20 +14,169 @@
 <div class="container mt-5">
   <!-- Encabezado utilizando clases de Bootstrap para centrarlo -->
   <h1 class="text-center display-4">Bienvenido a SISFLIX</h1>
+  
+  <!-- Sección de botones -->
+  <div class="text-center mt-4">
+    <!-- Botón para eliminar todos los videos -->
+    <button id="deleteAllButton" class="btn btn-danger">Eliminar Todos los Videos</button>
+    <!-- Botón para poblar la base de datos con videos de ejemplo -->
+    <button id="populateDbButton" class="btn btn-success">Poblar BD con Videos de Ejemplo</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVideoModal">Añadir Nuevo Video</button>
+  </div>
+  <!-- Modal para añadir nuevo video -->
+  <!-- Modal para añadir nuevo video -->
+  <div class="modal fade" id="addVideoModal" tabindex="-1" aria-labelledby="addVideoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addVideoModalLabel">Nuevo Video</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addVideoForm">
+            <div class="mb-3">
+              <label for="titulo" class="form-label">Título</label>
+              <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+            <div class="mb-3">
+              <label for="src" class="form-label">Fuente del Video (URL)</label>
+              <input type="text" class="form-control" id="src" name="src" required>
+            </div>
+            <div class="mb-3">
+              <label for="key" class="form-label">Clave</label>
+              <input type="text" class="form-control" id="key" name="key" required>
+            </div>
+            <div class="mb-3">
+              <label for="keyid" class="form-label">Key ID</label>
+              <input type="text" class="form-control" id="keyid" name="keyid" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Video</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Sección de lista de videos -->
   <ul class="list-group mt-4">
     <% videos.forEach(video => { %>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <%= video.titulo %>
+        <button type="button" class="btn btn-info btn-sm infoButton" data-bs-toggle="modal" data-bs-target="#infoModal" data-video-id="<%= video._id %>"></button>Info</button>
         <a href="/video/<%= video._id %>" class="btn btn-primary btn-sm">Ver</a>
       </li>
     <% }); %>
   </ul>
 </div>
+<!-- Modal para mostrar la información del video -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Información del Video</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="videoTitulo"></p>
+        <p id="videoURL"></p>
+        <p id="videoClave"></p>
+        <p id="videoKeyID"></p>
+        <!-- Aquí puedes añadir más campos si es necesario -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Scripts de Bootstrap y Popper.js (Asegúrate de incluir jQuery y Popper.js si es necesario) -->
 <script src="/static/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Script para manejar el clic en el botón de eliminar todos los videos
+  document.getElementById('deleteAllButton').addEventListener('click', function() {
+    if(confirm('¿Estás seguro de que quieres eliminar todos los videos?')) {
+      fetch('/api/delete-all', {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        // Recarga la página o redirige según sea necesario
+        location.reload();
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  });
+</script>
+
+<script>
+  // Script para manejar el clic en el botón de poblar la base de datos
+  document.getElementById('populateDbButton').addEventListener('click', function() {
+    fetch('/api/populate', {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+  });
+</script>
+
+<script>
+  document.getElementById('addVideoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    fetch('/api/video', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      // Cierra el modal y limpia el formulario
+      $('#addVideoModal').modal('hide');
+      this.reset();
+    })
+    .catch(error => console.error('Error:', error));
+  });
+</script>
+
+<script>
+  document.querySelectorAll('.infoButton').forEach(button => {
+    button.addEventListener('click', function() {
+      const videoId = this.getAttribute('data-video-id');
+
+      // Realiza una solicitud GET para obtener la información del video
+      fetch('/api/video/' + videoId)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Video no encontrado');
+          }
+          return response.json();
+        })
+        .then(video => {
+          // Actualizar el contenido del modal
+          document.getElementById('videoTitulo').textContent = 'Título: ' + video.titulo;
+          document.getElementById('videoURL').textContent = 'URL: ' + video.src;
+          document.getElementById('videoClave').textContent = 'Clave: ' + video.key;
+          document.getElementById('videoKeyID').textContent = 'Key ID: ' + video.keyid;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Manejar el error aquí, por ejemplo, mostrando un mensaje en el modal
+        });
+    });
+  });
+</script>
 
 </body>
 </html>
