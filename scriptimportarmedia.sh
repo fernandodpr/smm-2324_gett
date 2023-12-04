@@ -57,14 +57,14 @@ do
         # Comando Shaka Packager
         # Habría que hacer que meta los archivos procesados ya en /webmedia, ya le he pasado al contenedor esa ruta dejar los archivos de salida en:
         # "/webmedia"
-        # comando="packager input=/media/${nombre_con_extension},stream=audio,output=/media/${nombre_sin_extension}_audio.mp4 input=/media/${nombre_con_extension},stream=video,output=/media/${nombre_sin_extension}_video.mp4 --mpd_output /media/${nombre_mpd}"
+         comando="packager input=/media/${nombre_con_extension},stream=audio,output=/webmedia/${nombre_sin_extension}_audio.mp4 input=/media/${nombre_con_extension},stream=video,output=/webmedia/${nombre_sin_extension}_video.mp4 --mpd_output /webmedia/${nombre_mpd}"
 
 
         # Ejecutar el comando y redirigir la salida a un archivo
         #echo $comando > shaka-packager
         
-        
-        docker exec smm-2324_gett_shaka-packager_1 $COMANDO > shaka-packager
+        echo A
+        docker exec smm-2324_gett_shaka-packager_1 $comando
         
 
         # No hace falta mover el scritpr al contenedor, con hacer el docker exec debería de llegar
