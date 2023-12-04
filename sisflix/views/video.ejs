@@ -7,6 +7,8 @@
   <title>SYSFLIX</title>
   <!-- Enlace al tema Quartz de Bootswatch -->
   <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player/dist/shaka-player.ui.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/shaka-player/dist/controls.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
@@ -14,12 +16,9 @@
     <h1 class="text-center display-4">SISFLIX: <%= video.titulo %></h1>
   
     <div class="text-center">
-    
-  
-      <video controls width="640" height="360" class="rounded shadow">
-        <source src="<%= video.src %>" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
-      </video>
+      <div id="video-container">
+        <video id="video" width="640" controls autoplay></video>
+      </div>
     </div>
   </div>
 
@@ -36,5 +35,55 @@
     // Muestra el parámetro en la página
     document.getElementById('videoIdDisplay').innerText = `Video ID: ${videoId}`;
   </script>
+  <script>
+    async function init() {
+      // Referencia al elemento de video
+      var video = document.getElementById('video');
+      var player = new shaka.Player(video);
+  
+      // Configurar la interfaz de usuario de Shaka Player
+      const ui = new shaka.ui.Overlay(player, document.getElementById('video-container'), video);
+      const config = {
+        'controlPanelElements': ['play_pause', 'mute', 'volume', 'fullscreen', 'quality', 'time_and_duration'],
+        'addSeekBar': true,
+      };
+      ui.configure(config);
+  
+      // Configuración de Clear Key DRM
+      player.configure({
+        drm: {
+          clearKeys: {
+            // Reemplaza 'KEY_ID' y 'KEY' con tus valores reales
+            '<%= video.keyid%>': '<%= video.key%>'
+          }
+        }
+      });
+  
+      // Escucha para errores de Shaka Player
+      player.addEventListener('error', onErrorEvent);
+  
+      // Intenta cargar un manifiesto.
+      try {
+        console.log("voy a cargar");
+        await player.load('<%= video.src%>');
+        console.log('El video ha sido cargado con éxito');
+      } catch (e) {
+        onError(e);
+      }
+    }
+  
+    function onErrorEvent(event) {
+      onError(event.detail);
+    }
+  
+    function onError(error) {
+      console.error('Error code', error.code, 'obj', error);
+    }
+  
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+
+
 </body>
 </html>
