@@ -25,3 +25,8 @@ dist/
 # Archivos de configuración del sistema operativo
 .DS_Store
 Thumbs.db
+
+
+#Para no subir los videos a git
+.mp4
+.mpd
