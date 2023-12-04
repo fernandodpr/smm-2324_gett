@@ -21,7 +21,6 @@ const httpsServer = https.createServer(credentials, app);
 app.use('/static', express.static(path.join(__dirname, 'node_modules')));
 app.use(express.json());
 app.set('view engine', 'ejs');
-
 mongoose.connect('mongodb://mongo:27017/videos');
 
 
@@ -30,7 +29,8 @@ const videoSchema = new mongoose.Schema({
   titulo: String,
   src: String,
   _id: mongoose.Schema.Types.ObjectId,
-  key: String
+  key: String,
+  keyid: String
   //definimos la varialbles que tiene el video
 });
 
