@@ -71,16 +71,7 @@ ffmpeg -i "$directorio"/"${nombre_con_extension}" \
             rm "$directorio"/"${nombre_con_extension}"
             rm "$directorio"/"${nombre_ext_144}"
             rm "$directorio"/"${nombre_ext_50}"
-            
-
-            # No hace falta mover el scritpr al contenedor, con hacer el docker exec debería de llegar
-            # Engadir script ao contenedor
-            #chmod +x shaka-packager
-            #docker cp ./shaka-packager shaka-packager-container:shaka-packager
-            #docker exec shaka-packager-container chmod +x shaka-packager.sh
-            #docker exec shaka-packager-container sh shaka-packager
-
-
+        
 
         done
 
