@@ -25,7 +25,16 @@ do
             
             sleep 1
             # Video al 50% de la calidad original
-            ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -crf 23 -vf "scale=iw*0.5:ih*0.5" -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
+            #ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -crf 23 -vf "scale=iw*0.5:ih*0.5" -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
+            #   ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -crf 23 -vf "scale=iw*0.5:ih*0.5:flags=lanczos+full_chroma_inp+full_chroma_int,format=yuv420p" -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
+ffmpeg -i "$directorio"/"${nombre_con_extension}" \
+-c:v libx264 -crf 23 \
+-vf "scale='trunc(iw/2)*2:trunc(ih/2)*2'" \
+-c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
+
+            
+            
+            
             nombre_ext_50="${nombre_sin_extension}_50percent_quality.mp4"
             nombre_sin_ext_50="${nombre_sin_extension}_50percent_quality"
             nombre_mpd_50="${nombre_sin_extension}_50percent_quality.mpd"
@@ -47,6 +56,9 @@ do
             docker exec smm-2324_gett_shaka-packager_1 $comando1
             docker exec smm-2324_gett_shaka-packager_1 $comando2
             docker exec smm-2324_gett_shaka-packager_1 $comando3
+
+            curl -k -X POST https://sisflix.net:8443/api/video -H 'Content-Type: application/json' -d '{"titulo": "$nombre_sin_extension", "src": "https://sisflix.net:9443/$nombre_sin_extension.mpd", "keyid": "501e9eb249d7efdf1162b07c32842c31","key":"47c003c601fd6838a610a49e1c67cd4c"}'
+
 
             sleep 5
             rm "$directorio"/"${nombre_con_extension}"
