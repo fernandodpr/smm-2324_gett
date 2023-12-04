@@ -21,23 +21,20 @@ do
             ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -vf "scale=256:144" -crf 35 -c:a aac -b:a 48k "./ingest/${nombre_sin_extension}_144p.mp4"
             nombre_ext_144="${nombre_sin_extension}_144p.mp4"
             nombre_sin_ext_144="${nombre_sin_extension}_144"
-            nombre_mpd_144="${nombre_sin_extension}_144p.mpd"
+            nombre_mpd_144="${nombre_sin_extension}_144p.mpd" #sobra
             
             sleep 1
             # Video al 50% de la calidad original
             #ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -crf 23 -vf "scale=iw*0.5:ih*0.5" -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
             #   ffmpeg -i "$directorio"/"${nombre_con_extension}" -c:v libx264 -crf 23 -vf "scale=iw*0.5:ih*0.5:flags=lanczos+full_chroma_inp+full_chroma_int,format=yuv420p" -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
-ffmpeg -i "$directorio"/"${nombre_con_extension}" \
--c:v libx264 -crf 23 \
--vf "scale='trunc(iw/2)*2:trunc(ih/2)*2'" \
--c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
+            ffmpeg -i "$directorio"/"${nombre_con_extension}" \
+            -c:v libx264 -crf 23 \
+            -vf "scale='trunc(iw/2)*2:trunc(ih/2)*2'" \
+            -c:a aac -b:a 128k "./ingest/${nombre_sin_extension}_50percent_quality.mp4"
 
-            
-            
-            
             nombre_ext_50="${nombre_sin_extension}_50percent_quality.mp4"
             nombre_sin_ext_50="${nombre_sin_extension}_50percent_quality"
-            nombre_mpd_50="${nombre_sin_extension}_50percent_quality.mpd"
+            nombre_mpd_50="${nombre_sin_extension}_50percent_quality.mpd" #sobra
 
             sleep 1
             # Comando Shaka Packager
