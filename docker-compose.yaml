@@ -38,8 +38,8 @@ services:
     volumes:
       - ./ingest/:/media
       - ./webmedia/:/webmedia
-    stdin_open: true  # Equivalente a '-i' en docker run
-    tty: true         # Equivalente a '-t' en docker run
+    stdin_open: true
+    tty: true
 
 volumes:
   mongodb_data:
