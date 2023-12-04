@@ -101,6 +101,41 @@ app.post('/api/video', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+app.delete('/api/video/:id', async (req, res) => {
+  try {
+    const videoId = req.params.id;
+    
+    const video = await Video.findByIdAndDelete(videoId);
+
+    if (!video) {
+      return res.status(404).send('Video no encontrado');
+    }
+
+    res.json({ message: 'Video eliminado exitosamente' });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+app.put('/api/video/:id', async (req, res) => {
+  try {
+    const videoId = req.params.id;
+    const updateData = req.body;
+
+    // Opción para asegurar que se devuelve el documento actualizado
+    const options = { new: true };
+
+    const updatedVideo = await Video.findByIdAndUpdate(videoId, updateData, options);
+
+    if (!updatedVideo) {
+      return res.status(404).send('Video no encontrado');
+    }
+
+    res.json({ message: 'Video actualizado exitosamente', video: updatedVideo });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 app.delete('/api/delete-all', async (req, res) => {
   try {
