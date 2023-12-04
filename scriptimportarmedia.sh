@@ -43,6 +43,11 @@ ffmpeg -i "$directorio"/"${nombre_con_extension}" \
             # Comando Shaka Packager
             # Habría que hacer que meta los archivos procesados ya en /webmedia, ya le he pasado al contenedor esa ruta dejar los archivos de salida en:
             # "/webmedia"
+
+            # Todo esto hay que meterlo en una sola línea, volver a ver referencia en Discord del ejemplo que pasé de windows.
+            # La idea es tener un sólo manifest con todos los videos dentro, shacka ya es después capaz de indetificar de que calidad es cada uno
+            # Además es necesario generar un apr de key en unas variables, una que haga de key-id y de key y meterlo también el comando de shacka
+
             echo $nombre_con_extension
             comando1="packager input=/media/${nombre_con_extension},stream=audio,output=/webmedia/${nombre_sin_extension}_audio.mp4 input=/media/${nombre_con_extension},stream=video,output=/webmedia/${nombre_sin_extension}_video.mp4 --mpd_output /webmedia/${nombre_mpd}"
             comando2="packager input=/media/${nombre_ext_144},stream=audio,output=/webmedia/${nombre_sin_ext_144}_audio.mp4 input=/media/${nombre_ext_144},stream=video,output=/webmedia/${nombre_sin_ext_144}_video.mp4 --mpd_output /webmedia/${nombre_mpd_144}"
@@ -59,6 +64,8 @@ ffmpeg -i "$directorio"/"${nombre_con_extension}" \
 
             curl -k -X POST https://sisflix.net:8443/api/video -H 'Content-Type: application/json' -d '{"titulo": "$nombre_sin_extension", "src": "https://sisflix.net:9443/$nombre_sin_extension.mpd", "keyid": "501e9eb249d7efdf1162b07c32842c31","key":"47c003c601fd6838a610a49e1c67cd4c"}'
 
+
+            #Antes de borrar nada diría de hacer el curl
 
             sleep 5
             rm "$directorio"/"${nombre_con_extension}"
