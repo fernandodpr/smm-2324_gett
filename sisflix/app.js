@@ -22,7 +22,7 @@ app.use('/static', express.static(path.join(__dirname, 'node_modules')));
 app.use(express.json());
 app.set('view engine', 'ejs');
 
-mongoose.connect('mongodb://root:example@sisflix.net:27017/videos');
+mongoose.connect('mongodb://mongo:27017/videos');
 
 
 
