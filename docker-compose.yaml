@@ -37,9 +37,9 @@ services:
     image: google/shaka-packager
     volumes:
       - ./ingest/:/media
+      - ./videoencode/:/videoencode
       - ./webmedia/:/webmedia
     stdin_open: true
     tty: true
-
 volumes:
   mongodb_data:
